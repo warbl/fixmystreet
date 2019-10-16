@@ -4,7 +4,9 @@
     - Admin improvements:
         - order unsent reports by confirmed date
     - Bugfixes
-	- Application user in Docker container can't install packages. #2914
+        - Application user in Docker container can't install packages. #2914
+    - Development improvements:
+        - Add fetch script that does combined job of fetch-comments and fetch-reports.
 
 * v3.0 (4th March 2020)
     - Security:
