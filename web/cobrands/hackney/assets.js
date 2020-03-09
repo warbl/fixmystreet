@@ -13,7 +13,7 @@ var layers = [
   },
 ];
 
-var hackney_defaults = $.extend(true, {}, fixmystreet.assets.alloyv2_defaults, {
+var hackney_defaults = $.extend(true, {}, fixmystreet.alloyv2_defaults, {
   class: OpenLayers.Layer.NCCVectorAsset,
   protocol_class: OpenLayers.Protocol.AlloyV2,
   http_options: {
@@ -32,6 +32,7 @@ $.each(layers, function(index, layer) {
     if ( layer.categories && layer.styleid ) {
         var options = {
           http_options: {
+            base: "https://tilma.staging.mysociety.org/resource-proxy/proxy.php?https://hackney.assets/api/layer/${layerid}/${x}/${y}/${z}/cluster?styleIds=${styleid}",
             styleid: layer.styleid,
           },
           asset_type: layer.asset_type || 'spot',
