@@ -5,6 +5,8 @@
         - order unsent reports by confirmed date
     - Bugfixes
 	- Application user in Docker container can't install packages. #2914
+    - Open311 improvements:
+        - match response templates on external status code over state
 
 * v3.0 (4th March 2020)
     - Security:
