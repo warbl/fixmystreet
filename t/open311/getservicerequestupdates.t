@@ -1041,7 +1041,7 @@ for my $test (
         <service_request_id>@{[ $problem->external_id ]}</service_request_id>
         <status>in_progress</status>
         <description></description>
-        <updated_datetime>UPDATED_DATETIME</updated_datetime>
+        <updated_datetime>UPDATED_DATETIME2</updated_datetime>
         <external_status_code>@{[ $test->{external_code} ]}</external_status_code>
         </request_update>
         </service_requests_updates>
@@ -1058,7 +1058,9 @@ for my $test (
 
         $problem->comments->delete;
 
-        $requests_xml =~ s/UPDATED_DATETIME/$dt/g;
+        my $dt2 = $dt->clone->add( minutes => 1 );
+        $requests_xml =~ s/UPDATED_DATETIME/$dt/;
+        $requests_xml =~ s/UPDATED_DATETIME2/$dt2/;
 
         my $o = Open311->new( jurisdiction => 'mysociety', endpoint => 'http://example.com', test_mode => 1, test_get_returns => { 'servicerequestupdates.xml' => $requests_xml } );
 
