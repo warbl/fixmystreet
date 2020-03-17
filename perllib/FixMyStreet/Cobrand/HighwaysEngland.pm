@@ -70,4 +70,38 @@ sub updates_disallowed {
     return 0;
 }
 
+# Bypass photo requirement, we have none
+sub recent_photos {
+    my ( $self, $area, $num, $lat, $lon, $dist ) = @_;
+    return $self->problems->_recent($num, $lat, $lon, $dist);
+}
+
+sub area_check {
+    my ( $self, $params, $context ) = @_;
+
+    my $areas = $params->{all_areas};
+    $areas = {
+        map { $_->{id} => $_ }
+        # If no country, is prefetched area and can assume is E
+        grep { ($_->{country} || 'E') eq 'E' }
+        values %$areas
+    };
+    return $areas if %$areas;
+
+    my $error_msg = 'Sorry, this site only covers England.';
+    return ( 0, $error_msg );
+}
+
+sub fetch_area_children {
+    my $self = shift;
+
+    my $areas = FixMyStreet::MapIt::call('areas', $self->area_types);
+    $areas = {
+        map { $_->{id} => $_ }
+        grep { ($_->{country} || 'E') eq 'E' }
+        values %$areas
+    };
+    return $areas;
+}
+
 1;
