@@ -101,7 +101,7 @@ $(function() {
         if (!qs.bbox && !qs.lat && !qs.lon) {
             var strategy = fixmystreet.markers.strategies[0];
             strategy.deactivate();
-            var bounds = new OpenLayers.Bounds(-614115, 6468053, 195660, 7519292);
+            var bounds = new OpenLayers.Bounds(-176879, 6786045, -46630, 7067639);
             var center = bounds.getCenterLonLat();
             var z = fixmystreet.map.getZoomForExtent(bounds);
             fixmystreet.map.setCenter(center, z);
