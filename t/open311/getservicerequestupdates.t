@@ -1018,11 +1018,11 @@ my $response_template_in_progress = $bodies{2482}->response_templates->create({
 for my $test (
     {
         external_code => '090',
-        description => 'check numeric external status code in responset template override state',
+        description => 'check numeric external status code in response template override state',
     },
     {
         external_code => 'futher',
-        description => 'check alpha external status code in responset template override state',
+        description => 'check alpha external status code in response template override state',
     },
 ) {
     subtest $test->{description} => sub {
