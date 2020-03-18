@@ -271,7 +271,7 @@ sub comment_text_for_request {
             # make sure that empty string comes last. Can't use DESC as that orders
             # empty string before codes starting with 0 and explicit ASC will order
             # empty string before codes starting with characters
-            $order = { order_by => \"me.external_status_code NULLS LAST" };
+            $order = { order_by => \"me.external_status_code DESC NULLS LAST" };
         };
 
         if (my $t = $problem->response_templates->search({
