@@ -98,10 +98,10 @@ sub fetch_area_children {
     return $areas;
 }
 
-sub categories_restriction {
-    my ($self, $rs) = @_;
-    $rs = $rs->search( { 'body.name' => 'Highways England' } );
-    return $rs;
+sub munge_report_new_bodies {
+    my ($self, $bodies) = @_;
+    # On the cobrand there is only the HE body
+    %$bodies = map { $_->id => $_ } grep { $_->name eq 'Highways England' } values %$bodies;
 }
 
 sub report_new_is_on_he_road {
