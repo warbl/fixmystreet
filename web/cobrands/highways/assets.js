@@ -65,20 +65,55 @@ fixmystreet.assets.add(defaults, {
             }
             $('#highways').remove();
             if ( !fixmystreet.assets.selectedFeature() ) {
-                fixmystreet.body_overrides.only_send('Highways England');
                 add_highways_warning(feature.attributes.ROA_NUMBER);
-                $('#category_meta').empty();
             }
         },
         not_found: function(layer) {
             fixmystreet.body_overrides.location = null;
-            if (fixmystreet.body_overrides.get_only_send() === 'Highways England') {
-                fixmystreet.body_overrides.remove_only_send();
-            }
             $('#highways').remove();
         }
     }
 });
+
+function regenerate_category_groups() {
+    var old_category_group = $('#category_group').val() || $('#filter_group').val();
+    $('#category_group').remove();
+    fixmystreet.set_up.category_groups(old_category_group, true);
+}
+
+function he_selected() {
+    // On a TfL road, remove any council categories, except street cleaning
+    if (!fixmystreet.reporting_data) return;
+    $('#form_category').find('option').each(function(i, option) {
+        var data = fixmystreet.reporting_data.by_category[option.value];
+        if (data && OpenLayers.Util.indexOf(data.bodies, 'Highways England') === -1) {
+            option.disabled = true;
+        } else {
+            option.disabled = false;
+        }
+    });
+    regenerate_category_groups();
+    fixmystreet.body_overrides.location = null;
+}
+
+function non_he_selected() {
+    fixmystreet.body_overrides.location = {
+        latitude: $('#fixmystreet\\.latitude').val(),
+        longitude: $('#fixmystreet\\.longitude').val()
+    };
+
+    // On non-TfL, remove any TfL-road-only categories
+    if (!fixmystreet.reporting_data) return;
+    $('#form_category').find('option').each(function(i, option) {
+        var data = fixmystreet.reporting_data.by_category[option.value];
+        if (data && OpenLayers.Util.indexOf(data.bodies, 'Highways England') > -1) {
+            option.disabled = true;
+        } else {
+            option.disabled = false;
+        }
+    });
+    regenerate_category_groups();
+}
 
 function add_highways_warning(road_name) {
   var $warning = $('<div class="box-warning" id="highways"><p>It looks like you clicked on the <strong>' + road_name + '</strong> which is managed by <strong>Highways England</strong>. ' +
@@ -90,12 +125,7 @@ function add_highways_warning(road_name) {
         .attr('name', 'highways-choice')
         .attr('id', 'js-highways')
         .prop('checked', true)
-        .on('click', function() {
-            fixmystreet.body_overrides.location = null;
-            fixmystreet.body_overrides.only_send('Highways England');
-            $(fixmystreet).trigger('report_new:highways_change');
-            $('#category_meta').empty();
-        })
+        .on('click', he_selected)
         .appendTo($radios);
     $('<label>')
         .attr('for', 'js-highways')
@@ -106,14 +136,7 @@ function add_highways_warning(road_name) {
         .attr('type', 'radio')
         .attr('name', 'highways-choice')
         .attr('id', 'js-not-highways')
-        .on('click', function() {
-            fixmystreet.body_overrides.location = {
-                latitude: $('#fixmystreet\\.latitude').val(),
-                longitude: $('#fixmystreet\\.longitude').val()
-            };
-            fixmystreet.body_overrides.remove_only_send();
-            $(fixmystreet).trigger('report_new:highways_change');
-        })
+        .on('click', non_he_selected)
         .appendTo($radios);
     $('<label>')
         .attr('for', 'js-not-highways')
@@ -122,9 +145,7 @@ function add_highways_warning(road_name) {
         .appendTo($radios);
     $radios.appendTo($warning);
     $('.change_location').after($warning);
-    fixmystreet.body_overrides.location = null;
-    fixmystreet.body_overrides.only_send('Highways England');
-    $(fixmystreet).trigger('report_new:highways_change');
+    he_selected();
 }
 
 })();
