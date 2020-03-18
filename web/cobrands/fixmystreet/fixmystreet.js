@@ -568,6 +568,9 @@ $.extend(fixmystreet.set_up, {
 
             if (no_event) {
                 $options.each(function() {
+                    if (this.disabled) {
+                        $('#' + subcategory_id).find('[value="'+this.value+'"]').attr('disabled', true);
+                    }
                     // Make sure any preselected value is preserved in the new UI:
                     if (this.selected) {
                         $group_select.val(label);
