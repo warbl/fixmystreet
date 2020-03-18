@@ -60,12 +60,16 @@ fixmystreet.assets.add(defaults, {
     no_asset_msg_id: '#js-not-he-road',
     actions: {
         found: function(layer, feature) {
+            fixmystreet.body_overrides.only_send('Highways England');
             // If the road isn't in area 7 then we want to show the not found message.
             fixmystreet.message_controller.road_found(layer, feature, function(feature) {
                 return feature.attributes.area_name === 'Area 7';
             }, '#js-not-area7-road');
         },
-        not_found: fixmystreet.message_controller.road_not_found
+        not_found: function(layer) {
+            fixmystreet.body_overrides.remove_only_send('Highways England');
+            fixmystreet.message_controller.road_not_found(layer);
+        }
     }
 });
 
