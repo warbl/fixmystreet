@@ -13,13 +13,13 @@ describe('Highways England tests', function() {
         cy.wait('@report-ajax');
         cy.wait('@highways-tilma');
         cy.get('#highways').should('contain', 'M6');
-        cy.get('#js-councils_text').should('contain', 'Highways England');
-        cy.get('#single_body_only').should('have.value', 'Highways England');
+        //cy.get('#js-councils_text').should('contain', 'Highways England');
+        //cy.get('#single_body_only').should('have.value', 'Highways England');
         cy.get('#js-not-highways').click();
         cy.get('#js-councils_text').should('contain', 'Borsetshire');
         cy.get('#single_body_only').should('have.value', '');
         cy.get('#js-highways').click({ force: true });
-        cy.get('#js-councils_text').should('contain', 'Highways England');
-        cy.get('#single_body_only').should('have.value', 'Highways England');
+        //cy.get('#js-councils_text').should('contain', 'Highways England');
+        //cy.get('#single_body_only').should('have.value', 'Highways England');
     });
 });

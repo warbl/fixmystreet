@@ -252,15 +252,6 @@ var rule_not_owned = new OpenLayers.Rule({
 });
 highways_style.addRules([rule_owned, rule_not_owned]);
 
-$(fixmystreet).on('report_new:highways_change', function() {
-    if (fixmystreet.body_overrides.get_only_send() === 'Highways England') {
-        $('#bucks_dangerous_msg').hide();
-    } else {
-        $('#bucks_dangerous_msg').show();
-    }
-});
-
-
 fixmystreet.assets.add(defaults, {
     http_options: {
         params: {

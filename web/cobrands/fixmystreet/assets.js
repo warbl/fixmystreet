@@ -1200,15 +1200,6 @@ fixmystreet.message_controller = (function() {
 
     // make sure we fire the code to check if an asset is selected if
     // we change options in the Highways England message
-    $(fixmystreet).on('report_new:highways_change', function() {
-        if (fixmystreet.body_overrides.get_only_send() === 'Highways England') {
-            $('#' + stopperId).remove(); // Get rid of any stopper message
-            responsibility_off(); // Will also reenable form
-        } else {
-            $(fixmystreet).trigger('report_new:category_change');
-        }
-    });
-
     $(fixmystreet).on('report_new:category_change', check_for_stopper);
 
     return {
@@ -1237,8 +1228,6 @@ fixmystreet.message_controller = (function() {
                 fixmystreet.body_overrides.do_not_send(layer.fixmystreet.body);
                 if (is_only_body(layer.fixmystreet.body)) {
                     responsibility_on(msg_id);
-                } else if (!layer.fixmystreet.body && fixmystreet.cobrand === 'highwaysengland') {
-                    responsibility_on(msg_id);
                 }
             }
         },
@@ -1254,8 +1243,6 @@ fixmystreet.message_controller = (function() {
                 fixmystreet.body_overrides.allow_send(layer.fixmystreet.body);
                 responsibility_off();
             } else if (is_only_body(layer.fixmystreet.body)) {
-                responsibility_on(layer.fixmystreet.no_asset_msg_id, layer.fixmystreet.asset_item, layer.fixmystreet.asset_type);
-            } else if (!layer.fixmystreet.body && fixmystreet.cobrand === 'highwaysengland') {
                 responsibility_on(layer.fixmystreet.no_asset_msg_id, layer.fixmystreet.asset_item, layer.fixmystreet.asset_type);
             }
         },

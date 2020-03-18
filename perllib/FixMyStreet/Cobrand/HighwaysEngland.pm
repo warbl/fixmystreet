@@ -45,12 +45,6 @@ sub example_places {
 
 sub allow_photo_upload { 0 }
 
-sub report_form_extras { (
-    { name => 'sect_label', required => 0 },
-    { name => 'area_name', required => 0 },
-    { name => 'road_name', required => 0 },
-) }
-
 sub allow_anonymous_reports { 'button' }
 
 sub admin_user_domain { 'highwaysengland.co.uk' }
@@ -102,6 +96,32 @@ sub fetch_area_children {
         values %$areas
     };
     return $areas;
+}
+
+sub categories_restriction {
+    my ($self, $rs) = @_;
+    $rs = $rs->search( { 'body.name' => 'Highways England' } );
+    return $rs;
+}
+
+sub report_new_is_on_he_road {
+    my ( $self ) = @_;
+
+    my ($x, $y) = (
+        $self->{c}->stash->{longitude},
+        $self->{c}->stash->{latitude},
+    );
+
+    my $cfg = {
+        url => "https://tilma.mysociety.org/mapserver/highways",
+        srsname => "urn:ogc:def:crs:EPSG::4326",
+        typename => "Highways",
+        filter => "<Filter><DWithin><PropertyName>geom</PropertyName><gml:Point><gml:coordinates>$x,$y</gml:coordinates></gml:Point><Distance units='m'>50</Distance></DWithin></Filter>",
+    };
+
+    my $ukc = FixMyStreet::Cobrand::UKCouncils->new;
+    my $features = $ukc->_fetch_features($cfg, $x, $y);
+    return scalar @$features ? 1 : 0;
 }
 
 1;
