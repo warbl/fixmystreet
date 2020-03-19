@@ -116,7 +116,7 @@ sub report_new_is_on_he_road {
         url => "https://tilma.mysociety.org/mapserver/highways",
         srsname => "urn:ogc:def:crs:EPSG::4326",
         typename => "Highways",
-        filter => "<Filter><DWithin><PropertyName>geom</PropertyName><gml:Point><gml:coordinates>$x,$y</gml:coordinates></gml:Point><Distance units='m'>50</Distance></DWithin></Filter>",
+        filter => "<Filter><DWithin><PropertyName>geom</PropertyName><gml:Point><gml:coordinates>$x,$y</gml:coordinates></gml:Point><Distance units='m'>15</Distance></DWithin></Filter>",
     };
 
     my $ukc = FixMyStreet::Cobrand::UKCouncils->new;
