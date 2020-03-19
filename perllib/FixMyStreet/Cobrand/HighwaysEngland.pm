@@ -40,7 +40,8 @@ sub admin_allow_user {
 sub enter_postcode_text { 'Enter a location, road name or postcode' }
 
 sub example_places {
-    ['A14, Junction 13’, ‘A1 98.5', 'Newark on Trent']
+    my $self = shift;
+    return $self->feature('example_places') || $self->next::method();
 }
 
 sub allow_photo_upload { 0 }
