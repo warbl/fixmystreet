@@ -68,7 +68,8 @@ sub updates_disallowed {
 # Bypass photo requirement, we have none
 sub recent_photos {
     my ( $self, $area, $num, $lat, $lon, $dist ) = @_;
-    return $self->problems->_recent($num, $lat, $lon, $dist);
+    return $self->problems->recent if $area eq 'front';
+    return [];
 }
 
 sub area_check {
