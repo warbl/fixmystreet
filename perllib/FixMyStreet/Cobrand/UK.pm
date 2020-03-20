@@ -364,9 +364,8 @@ sub get_body_handler_for_problem {
     if ($row->to_body_named('TfL')) {
         return FixMyStreet::Cobrand::TfL->new;
     }
-    if ($row->to_body_named('Highways England')) {
-        return FixMyStreet::Cobrand::HighwaysEngland->new;
-    }
+    # Do not do anything for Highways England here, as we don't want it to
+    # treat this as a cobrand for e.g. submit report emails made on .com
 
     my @bodies = values %{$row->bodies};
     my %areas = map { %{$_->areas} } grep { $_->name !~ /TfL|Highways England/ } @bodies;

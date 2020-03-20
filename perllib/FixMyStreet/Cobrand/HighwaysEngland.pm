@@ -1,4 +1,3 @@
-use utf8;
 package FixMyStreet::Cobrand::HighwaysEngland;
 use parent 'FixMyStreet::Cobrand::UK';
 
